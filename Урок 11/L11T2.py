@@ -65,34 +65,34 @@ def get_suffix(age):
 print(get_suffix(12))
         
 
-# pets = {}
-# name = input("Для выхода напишите слово stop.\nДля продолжения введите имя питомца: ")
+pets = {}
+name = input("Для выхода напишите слово stop.\nДля продолжения введите имя питомца: ")
 
-# while name != "stop":
-#     pets[name] = {'вид питомца': '', 'возраст': 0, 'имя владельца': ''}
-#     pet = pets[name]
+while name != "stop":
+     pets[name] = {'вид питомца': '', 'возраст': 0, 'имя владельца': ''}
+     pet = pets[name]
 
-#     for key in pets[name]:
-#         pet[key] = input(f'Введите {key}: ')
-#         while key == 'возраст' and not pet[key].isdigit():
-#             pet[key] = input(f"Введено некорректное значение. Введите возраст (целое число): ")
+     for key in pets[name]:
+         pet[key] = input(f'Введите {key}: ')
+         while key == 'возраст' and not pet[key].isdigit():
+             pet[key] = input(f"Введено некорректное значение. Введите возраст (целое число): ")
             
-#     name = input('Для выхода напишите слово stop.\nДля продолжения введите имя питомца: ')
+     name = input('Для выхода напишите слово stop.\nДля продолжения введите имя питомца: ')
 
-# # Получаем списки имён и данных внешнего словаря
-# pet_names = list(pets.keys())
-# pet_data_list = list(pets.values())
+# Получаем списки имён и данных внешнего словаря
+pet_names = list(pets.keys())
+pet_data_list = list(pets.values())
 
-# for i in range(len(pet_names)):
-#     name = pet_names[i]
-#     data = pet_data_list[i]
+for i in range(len(pet_names)):
+     name = pet_names[i]
+     data = pet_data_list[i]
 
-#     # Получаем ключи и значения внутреннего словаря
-#     data_keys = list(data.keys())
-#     data_values = list(data.values())
+     # Получаем ключи и значения внутреннего словаря
+data_keys = list(data.keys())
+data_values = list(data.values())
 
-#     # Извлекаем значения (порядок известен)
-#     type, age, owner = data_values
-#     age = int(age)
+# Извлекаем значения (порядок известен)
+type, age, owner = data_values
+age = int(age)
 
-#     print(f"Это {type} по кличке \"{name}\". Возраст питомца: {age} {years_word}. Имя владельца: {owner}.")
+print(f"Это {type} по кличке \"{name}\". Возраст питомца: {age} {years_word}. Имя владельца: {owner}.")
