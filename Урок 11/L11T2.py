@@ -87,7 +87,7 @@ for i in range(len(pet_names)):
      name = pet_names[i]
      data = pet_data_list[i]
 
-     # Получаем ключи и значения внутреннего словаря
+# Получаем ключи и значения внутреннего словаря
 data_keys = list(data.keys())
 data_values = list(data.values())
 
@@ -95,4 +95,4 @@ data_values = list(data.values())
 type, age, owner = data_values
 age = int(age)
 
-print(f"Это {type} по кличке \"{name}\". Возраст питомца: {age} {years_word}. Имя владельца: {owner}.")
+print(f"Это {type} по кличке \"{name}\". Возраст питомца: {age} {get_suffix(age)}. Имя владельца: {owner}.")
