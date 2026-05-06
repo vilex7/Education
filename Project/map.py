@@ -10,6 +10,8 @@ from utils import rand_direction
 # 5 - огонь
 
 CELL_TYPES = "🟩🌲🌊🏥🏪🔥"
+TREE_BONUS = 100
+UPGRADE_COST = 500
 
 class Map:
 
@@ -17,6 +19,10 @@ class Map:
         self.w = w
         self.h = h
         self.cells = [[0 for _ in range(w)] for _ in range(h)]
+        self.generate_forest(1, 100)
+        self.generate_river(5)
+        self.generate_upgrade_shop()
+
 
     def check_bound(self, x, y):
         if (x < 0 or y < 0 or x >= self.h or y >= self.w):
@@ -84,5 +90,22 @@ class Map:
         for i in range(5):
             self.add_fire()
 
+    def generate_upgrade_shop(self):
+        c = rand_cell(self.w, self.h)
+        cx, cy = c[0], c[1]
+        if (self.cells[cx][cy] == 0):
+            self.cells[cx][cy] = 1
+    
+    def process_helicopter(self, helico):
+        c = self.cells[helico.x][helico.y]
+        if (c == 2):
+            helico.tank = helico.mxtank
+        if (c == 5 and helico.tank > 0):
+            helico.tank -= 1
+            helico.score += TREE_BONUS
+            self.cells[helico.x][helico.y] = 1
+        if (c == 4 and helico.score >= UPGRADE_COST):
+            helico.mxtank += 1
+            helico.score -= UPGRADE_COST
 
     
