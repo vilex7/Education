@@ -12,6 +12,7 @@ class Helicopter:
         self.mxtank = 1
         self.tank = 0
         self.score = 0
+        self.lifes = 20
 
     def move(self, dx, dy):
         nx, ny = dx + self.x, dy + self.y
@@ -20,4 +21,5 @@ class Helicopter:
 
     def print_stats(self):
         print('🪣 ', self.tank, '/', self.mxtank, sep='', end=' | ')
-        print('🏆', self.score)
+        print('🏆', self.score, end=' | ')
+        print('❤️', self.lifes)

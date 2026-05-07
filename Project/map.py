@@ -1,6 +1,8 @@
 from utils import rand_bool
 from utils import rand_cell
 from utils import rand_direction
+from clouds import Clouds
+import os
 
 # 0 - поле
 # 1 - дерево
@@ -11,7 +13,8 @@ from utils import rand_direction
 
 CELL_TYPES = "🟩🌲🌊🏥🏪🔥"
 TREE_BONUS = 100
-UPGRADE_COST = 500
+UPGRADE_COST = 5000
+LIFE_COST = 10000
 
 class Map:
 
@@ -19,23 +22,27 @@ class Map:
         self.w = w
         self.h = h
         self.cells = [[0 for _ in range(w)] for _ in range(h)]
-        self.generate_forest(1, 100)
-        self.generate_river(5)
+        self.generate_forest(5, 10)
+        self.generate_river(10)
         self.generate_upgrade_shop()
-
+        self.generate_hospital()
 
     def check_bound(self, x, y):
         if (x < 0 or y < 0 or x >= self.h or y >= self.w):
             return False
         return True
     
-    def print_map(self, helico):
+    def print_map(self, helico, clouds):
         print('⬛' * (self.w + 2))
         for ri in range(self.h):
             print('⬛', end='')
             for ci in range(self.w):
                 cell = self.cells[ri][ci]
-                if (helico.x == ri and helico.y == ci):
+                if (clouds.cells[ri][ci] == 1):
+                    print('⬜', end='')
+                elif (clouds.cells[ri][ci] == 2):
+                    print('🟨', end='')
+                elif (helico.x == ri and helico.y == ci):
                     print('🚁', end='')
                 elif (cell >= 0 and cell < len(CELL_TYPES)):
                     print(CELL_TYPES[cell], end="")
@@ -87,17 +94,25 @@ class Map:
                 cell = self.cells[ri][ci]
                 if cell == 5:
                     self.cells[ri][ci] = 0
-        for i in range(5):
+        for i in range(10):
             self.add_fire()
 
     def generate_upgrade_shop(self):
         c = rand_cell(self.w, self.h)
         cx, cy = c[0], c[1]
-        if (self.cells[cx][cy] == 0):
-            self.cells[cx][cy] = 1
+        self.cells[cx][cy] = 4
+
+    def generate_hospital(self):
+        c = rand_cell(self.w, self.h)
+        cx, cy = c[0], c[1]
+        if self.cells[cx][cy] != 4:
+            self.cells[cx][cy] = 3
+        else:
+            self.generate_hospital()
     
-    def process_helicopter(self, helico):
+    def process_helicopter(self, helico, clouds):
         c = self.cells[helico.x][helico.y]
+        d = clouds.cells[helico.x][helico.y]
         if (c == 2):
             helico.tank = helico.mxtank
         if (c == 5 and helico.tank > 0):
@@ -107,5 +122,14 @@ class Map:
         if (c == 4 and helico.score >= UPGRADE_COST):
             helico.mxtank += 1
             helico.score -= UPGRADE_COST
+        if (c == 3 and helico.score >= LIFE_COST):
+            helico.lifes += 10
+            helico.score -= LIFE_COST
+        if (d == 2):
+            helico.lifes -= 1
+            if (helico.lifes == 0):
+                os.system('cls')
+                print('GG', helico.score)
+                exit(0)
 
     
